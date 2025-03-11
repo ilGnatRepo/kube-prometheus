@@ -1,0 +1,43 @@
+- hosts: master
+  become: true
+  
+  tasks:
+  - name: check if image already exists
+    community.docker.docker_image:
+      name: "{{ item[0] }}/{{ item[2] }}"
+      source: local
+    register: image_check
+    ignore_errors: yes
+    loop:
+      - ["quay.io","quay.chenby.cn","prometheus/alertmanager:v0.27.0"]
+      - ["quay.io","quay.chenby.cn","prometheus/node-exporter:v1.8.2"]
+      - ["quay.io","quay.chenby.cn","brancz/kube-rbac-proxy:v0.18.2"]
+      - ["quay.io","quay.chenby.cn","prometheus/prometheus:v3.1.0"]
+      - ["quay.io","quay.chenby.cn","prometheus-operator/prometheus-operator:v0.79.2"]
+      - ["quay.io","quay.chenby.cn","prometheus/prometheus:v3.1.0"]
+      - ["quay.io","quay.chenby.cn","brancz/kube-rbac-proxy:v0.18.2"]
+      - ["quay.io","quay.chenby.cn","prometheus/blackbox-exporter:v0.25.0"]
+      - ["docker.io","docker.1ms.run","grafana/grafana:11.4.0"]
+      - ["registry.k8s.io","k8s.chenby.cn","prometheus-adapter/prometheus-adapter:v0.12.0"]
+      - ["ghcr.io","ghcr.chenby.cn","jimmidyson/configmap-reload:v0.14.0"]
+    loop_control:
+      label: "{{ item[2] }}"
+
+  - name: Pull and tag images if they do not exist
+    community.docker.docker_image:
+      name: "{{ item.item[1] }}/{{ item.item[2] }}"
+      source: pull
+    when: item.failed is true
+    loop: "{{ image_check.results }}"
+    loop_control:
+      label: "{{ item.item[2] }}"
+
+  - name: Pull and tag images if they do not exist
+    community.docker.docker_image:
+      name: "{{ item.item[1] }}/{{ item.item[2] }}"
+      source: local
+      repository: "{{ item.item[0] }}/{{ item.item[2] }}"
+    when: item.failed is true
+    loop: "{{ image_check.results }}"
+    loop_control:
+      label: "{{ item.item[2] }}"

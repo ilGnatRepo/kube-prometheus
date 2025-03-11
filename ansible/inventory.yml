@@ -1,0 +1,26 @@
+---
+master:
+  hosts:
+    ilgnatmaster001:
+      ansible_host: 1.95.150.226
+      ansible_user: root
+workers:
+  hosts:
+    ilgnatwoker001:
+      ansible_host: 158.101.133.80
+      ansible_user: ubuntu
+    ilgnatworker002:
+      ansible_host: 150.230.210.99
+      ansible_user: ubuntu
+# jenkins:
+#   hosts:
+#     cloud.aws.001:
+#       ansible_host: 3.26.0.38
+#       ansible_user: ubuntu    
+all:
+  vars:
+    ansible_python_interpreter: /usr/bin/python3.10
+  children:
+    master:
+    workers:
+    # jenkins:
