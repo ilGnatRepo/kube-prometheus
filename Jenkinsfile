@@ -26,9 +26,12 @@ pipeline {
                         docker.image('alpine/k8s:1.32.2').inside('-v ${KUBECONFIG}:/root/.kube/config --entrypoint=""') {
                             sh """
                                 kubectl get pods -n monitoring -o wide
-                                kubectl apply --server-side -f manifests/setup
-                                kubectl wait --for condition=Established --all CustomResourceDefinition --namespace=monitoring
-                                kubectl apply -f manifests/
+                                # Install kube-prometheus
+                                # kubectl apply --server-side -f manifests/setup
+                                # kubectl wait --for condition=Established --all CustomResourceDefinition --namespace=monitoring
+                                # kubectl apply -f manifests/
+                                # Uninstall kube-prometheus
+                                kubectl delete --ignore-not-found=true -f manifests/ -f manifests/setup
                             """
                         }
                     }
