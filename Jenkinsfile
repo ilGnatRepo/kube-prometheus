@@ -4,11 +4,6 @@ pipeline {
         DOCKER_HOST = 'tcp://10.110.0.6:2375'
     }
     stages {
-        stage("checkout code") {
-            steps {
-                checkout scm
-            }
-        }
         stage("deploy monitor package") {
             steps {
                 script {
