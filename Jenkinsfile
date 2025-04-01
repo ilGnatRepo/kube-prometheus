@@ -32,8 +32,8 @@ pipeline {
                             docker.image('alpine/k8s:1.32.2').inside('-v ${KUBECONFIG}:/root/.kube/config --entrypoint=""') {
                                 sh """
                                     # Install kube-prometheus
-                                    kubectl apply --server-side -f manifests/setup
-                                    kubectl wait --for condition=Established --all CustomResourceDefinition --namespace=monitoring --timeout=300s
+                                    kubectl apply --server-side -f manifests/setup --request-timeout=5m
+                                    kubectl wait --for condition=Established --all CustomResourceDefinition --namespace=monitoring
                                     kubectl apply -f manifests/
                                     # Uninstall kube-prometheus
                                     # kubectl delete --ignore-not-found=true -f manifests/ -f manifests/setup
