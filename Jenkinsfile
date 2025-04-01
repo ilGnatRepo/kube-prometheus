@@ -38,7 +38,7 @@ pipeline {
                                 sh """
                                     # Install kube-prometheus
                                     kubectl apply --server-side -f manifests/setup
-                                    kubectl wait --for condition=Established --all CustomResourceDefinition --namespace=monitoring
+                                    kubectl wait --for condition=Established --all CustomResourceDefinition --namespace=monitoring --timeout=300s
                                     kubectl apply -f manifests/
                                     # Uninstall kube-prometheus
                                     # kubectl delete --ignore-not-found=true -f manifests/ -f manifests/setup
