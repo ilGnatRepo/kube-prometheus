@@ -4,26 +4,26 @@ pipeline {
         DOCKER_HOST = 'tcp://10.110.0.6:2375'
     }
     stages {
-        stage("deploy monitor package") {
-            steps {
-                script {
-                    docker.withServer("${DOCKER_HOST}") {
-                        docker.image('alpine/ansible:latest').inside('-v /home/ubuntu/.ssh/known_hosts:/root/.ssh/known_hosts') {
-                            ansiColor('xterm') {
-                                dir('ansible') {
-                                    ansiblePlaybook(
-                                        playbook: 'playbook.yml',
-                                        inventory: 'inventory.yml',
-                                        credentialsId: '28488188-7eef-453b-bfb5-7b230ebb8688',
-                                        colorized: true
-                                    )
-                                }
-                            }                        
-                        }
-                    }
-                }
-            }
-        }
+        // stage("deploy monitor package") {
+        //     steps {
+        //         script {
+        //             docker.withServer("${DOCKER_HOST}") {
+        //                 docker.image('alpine/ansible:latest').inside('-v /home/ubuntu/.ssh/known_hosts:/root/.ssh/known_hosts') {
+        //                     ansiColor('xterm') {
+        //                         dir('ansible') {
+        //                             ansiblePlaybook(
+        //                                 playbook: 'playbook.yml',
+        //                                 inventory: 'inventory.yml',
+        //                                 credentialsId: '28488188-7eef-453b-bfb5-7b230ebb8688',
+        //                                 colorized: true
+        //                             )
+        //                         }
+        //                     }                        
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
         stage("check kubectl remote config") {
             steps {
                 script {
