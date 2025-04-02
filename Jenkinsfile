@@ -27,21 +27,21 @@ pipeline {
         stage("check kubectl remote config") {
             steps {
                 script {
-                    // docker.withServer("${DOCKER_HOST}") {
-                    withCredentials([file(credentialsId: '0ac81849-bb67-4d9d-b342-769e49277d08', variable: 'KUBECONFIG')]) {
-                        docker.image('alpine/k8s:1.32.2').inside('-v ${KUBECONFIG}:/root/.kube/config --entrypoint=""') {
-                            sh """
-                                # Install kube-prometheus
-                                kubectl apply --server-side -f manifests/setup --request-timeout=10m
-                                kubectl wait --for condition=Established --all CustomResourceDefinition --namespace=monitoring
-                                kubectl apply -f manifests/
-                                # Uninstall kube-prometheus
-                                # kubectl delete --ignore-not-found=true -f manifests/ -f manifests/setup
-                                kubectl get pods -n monitoring -o wide
-                            """
+                    docker.withServer("${DOCKER_HOST}") {
+                        withCredentials([file(credentialsId: '0ac81849-bb67-4d9d-b342-769e49277d08', variable: 'KUBECONFIG')]) {
+                            docker.image('alpine/k8s:1.32.2').inside('-v ${KUBECONFIG}:/root/.kube/config --entrypoint=""') {
+                                sh """
+                                    # Install kube-prometheus
+                                    kubectl apply --server-side -f manifests/setup --request-timeout=30m
+                                    kubectl wait --for condition=Established --all CustomResourceDefinition --namespace=monitoring
+                                    kubectl apply -f manifests/
+                                    # Uninstall kube-prometheus
+                                    # kubectl delete --ignore-not-found=true -f manifests/ -f manifests/setup
+                                    kubectl get pods -n monitoring -o wide
+                                """
+                            }
                         }
                     }
-                    // }
                 }
             }
         }
