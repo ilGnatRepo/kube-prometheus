@@ -15,8 +15,16 @@ workers:
       ansible_host: 1.95.165.30
       ansible_user: root
       peer_ip: 10.110.0.4
+    jenkins:
+      ansible_host: 14.103.141.165
+      ansible_user: root
+      peer_ip: 10.110.0.7
 cicd:
   hosts:
+    jenkins:
+      ansible_host: 14.103.141.165
+      ansible_user: root
+      peer_ip: 10.110.0.7
     jenkins001:
       ansible_host: 150.230.210.99
       ansible_user: ubuntu
