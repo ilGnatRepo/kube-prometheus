@@ -4,7 +4,7 @@ pipeline {
         stage("deploy monitor package") {
             steps {
                 script {
-                    docker.image('alpine/ansible:latest').inside('-v /home/ubuntu/.ssh/known_hosts:/root/.ssh/known_hosts') {
+                    docker.image('alpine/ansible:latest').inside('-v /root/.ssh/known_hosts:/root/.ssh/known_hosts') {
                         ansiColor('xterm') {
                             dir('ansible') {
                                 ansiblePlaybook(
