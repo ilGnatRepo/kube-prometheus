@@ -11,7 +11,6 @@
     loop:
       - ["quay.io","quay.chenby.cn","prometheus/alertmanager:v0.28.1"]
       - ["quay.io","quay.chenby.cn","prometheus/node-exporter:v1.9.0"]
-      - ["quay.io","quay.chenby.cn","brancz/kube-rbac-proxy:v0.18.2"]
       - ["quay.io","quay.chenby.cn","prometheus/prometheus:v3.1.0"]
       - ["quay.io","quay.chenby.cn","prometheus-operator/prometheus-operator:v0.81.0"]
       - ["quay.io","quay.chenby.cn","prometheus/prometheus:v3.2.1"]
@@ -28,6 +27,7 @@
     community.docker.docker_image:
       name: "{{ item.item[1] }}/{{ item.item[2] }}"
       source: pull
+    ignore_errors: yes
     when: item.failed is true
     loop: "{{ image_check.results }}"
     loop_control:
@@ -38,6 +38,7 @@
       name: "{{ item.item[1] }}/{{ item.item[2] }}"
       source: local
       repository: "{{ item.item[0] }}/{{ item.item[2] }}"
+    ignore_errors: yes
     when: item.failed is true
     loop: "{{ image_check.results }}"
     loop_control:
