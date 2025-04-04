@@ -4,19 +4,17 @@ pipeline {
         stage("deploy monitor package") {
             steps {
                 script {
-                    docker.withServer("${DOCKER_HOST}") {
-                        docker.image('alpine/ansible:latest').inside('-v /home/ubuntu/.ssh/known_hosts:/root/.ssh/known_hosts') {
-                            ansiColor('xterm') {
-                                dir('ansible') {
-                                    ansiblePlaybook(
-                                        playbook: 'playbook.yml',
-                                        inventory: 'inventory.yml',
-                                        credentialsId: 'b42216b6-0415-41da-bdca-bb76291352b9',
-                                        colorized: true
-                                    )
-                                }
-                            }                        
-                        }
+                    docker.image('alpine/ansible:latest').inside('-v /home/ubuntu/.ssh/known_hosts:/root/.ssh/known_hosts') {
+                        ansiColor('xterm') {
+                            dir('ansible') {
+                                ansiblePlaybook(
+                                    playbook: 'playbook.yml',
+                                    inventory: 'inventory.yml',
+                                    credentialsId: 'b42216b6-0415-41da-bdca-bb76291352b9',
+                                    colorized: true
+                                )
+                            }
+                        }                        
                     }
                 }
             }
