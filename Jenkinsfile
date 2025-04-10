@@ -29,7 +29,7 @@ pipeline {
                                 kubectl apply --server-side -f manifests/setup
                                 kubectl wait --for condition=Established --all CustomResourceDefinition --namespace=monitoring
                                 kubectl apply -f manifests/
-                                kubectl apply -f grafana-ingress.yml
+                                kubectl apply -f monitoring-ingress.yml
                                 # Uninstall kube-prometheus
                                 # kubectl delete --ignore-not-found=true -f manifests/ -f manifests/setup
                             """
