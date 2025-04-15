@@ -4,8 +4,14 @@ kind: Ingress
 metadata:
   name: grafana-ingress
   namespace: monitoring
+  annotation:
+    cert-manager.io/cluster-issuer: letsencrypt-issuer
 spec:
   ingressClassName: "nginx"
+  tls:
+    - hosts:
+      - grafana.somebody.icu
+      secretName: grafana-tls
   rules:
     - host: grafana.somebody.icu
       http:
@@ -24,8 +30,14 @@ kind: Ingress
 metadata:
   name: prometheus-ingress
   namespace: monitoring
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-issuer
 spec:
   ingressClassName: "nginx"
+  tls:
+    - hosts:
+      - prometheus.somebody.icu
+      secretName: prometheus-tls
   rules:
     - host: prometheus.somebody.icu
       http:
