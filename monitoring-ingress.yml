@@ -4,7 +4,7 @@ kind: Ingress
 metadata:
   name: grafana-ingress
   namespace: monitoring
-  annotation:
+  annotations:
     cert-manager.io/cluster-issuer: letsencrypt-issuer
 spec:
   ingressClassName: "nginx"
